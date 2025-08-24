@@ -30,6 +30,7 @@ router.get('/:id', (req, res) => {
 
 // Create new post
 router.post('/', (req, res) => {
+    console.log(req.body);
     const newPost = {
         id: posts.length + 1,
         title: req.body.title
@@ -39,8 +40,22 @@ router.post('/', (req, res) => {
 
     }
     posts.push(newPost);
-    res.status(201).json(newPost);
-})
+    res.status(201).json(posts);
+});
+
+// Update post
+router.put('/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const post = this.post.find((post) => post.id === id);
+
+    if(!post){
+        res
+        .status(404)
+        .json({msg : ` A post with the id of ${id} was not found`})
+    }
+    post.title = req.body.title;
+    req.status(201).json(posts);
+});
 
 
 module.exports = router;
